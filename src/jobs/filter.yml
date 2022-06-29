@@ -8,6 +8,8 @@ executor:
 
 resource_class: << parameters.resource_class >>
 
+orbs:
+  fast-checkout: elude/fast-checkout@0.0.1
 parameters:
   base-revision:
     type: string
@@ -46,7 +48,11 @@ parameters:
       https://hub.docker.com/r/cimg/python/tags
 
 steps:
-  - checkout
+  - fast-checkout/checkout:
+      when:
+        condition:
+          not:
+            equal: ["", << parameters.fast-paths >>]
   - when:
       condition:
         not:
